@@ -291,6 +291,12 @@ local mappings = {
 					[['wlr-randr --output eDP-1 --toggle']],
 				},
 			},
+			-- Super + M 切换代理模式 (Proxy mode)
+			{
+				mod = "Super",
+				key = "M",
+				command = { "spawn", "~/.config/river/scripts/mihomo_status.sh" },
+			},
 			-- Terminal
 			{
 				mod = "Super",
