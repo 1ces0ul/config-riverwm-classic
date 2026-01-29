@@ -338,3 +338,33 @@ window#waybar.hidden {
   color: #9e9e9e;
   background: transparent;
 }
+
+/* --- Mihomo 代理状态样式优化 --- */
+
+#custom-mihomo {
+  margin-top: 0px;
+  margin-left: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 0px;
+  border-radius: 0px;
+  color: #9e9e9e;
+  background: transparent;
+}
+
+/* 状态颜色暗示：保持简约的同时提供直观反馈 */
+#custom-mihomo.rule {
+  color: #81a1c1; /* 淡淡的蓝色，代表智能 */
+}
+
+#custom-mihomo.global {
+  color: #d08770; /* 淡淡的橘色，代表全局警告 */
+}
+
+#custom-mihomo.direct {
+  color: #a3be8c; /* 淡淡的绿色，代表直连安全 */
+}
+
+#custom-mihomo.offline {
+  color: #9e9e9e; /* 红色，代表服务宕机 */
+}
