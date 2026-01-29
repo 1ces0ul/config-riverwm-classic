@@ -61,7 +61,7 @@ local function spawn_once(command)
 	---@param program_name string
 	local function is_not_spawned(program_name)
 		local is_running =
-			popen(fmt("if pgrep %s >/dev/null 2>&1 ; then echo 'true' ; else echo 'false' ; fi", program_name))
+			popen(fmt("if pgrep -x %s >/dev/null 2>&1 ; then echo 'true' ; else echo 'false' ; fi", program_name))
 
 		local stringtoboolean = { ["true"] = true, ["false"] = false }
 		return not stringtoboolean[is_running]
@@ -99,7 +99,10 @@ local function random_wallpaper(dir)
 	math.randomseed(os.time())
 	return files[math.random(#files)]
 end
+
 local wallpaper = random_wallpaper(wallpaper_dir)
+
+local SCRIPTS = HOME .. "/.config/river/scripts"
 
 -- Screenlock
 local waylock = "waylock"
@@ -125,15 +128,15 @@ local status_bar_cmd = fmt("%s -c %s -s %s", waybar_cmd, waybar_config, waybar_s
 
 -- Autocommands
 local autostarts = {
+  -- Startup programs
+  -- stylua: ignore
+  -- Inform dbus about the environment variables
 	{ "systemctl --user set-environment XDG_CURRENT_DESKTOP=river" },
 	{ "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" },
 	{ "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river" },
-  -- Startup programs
-  -- stylua: ignore
-    { "systemctl --user start swww.service" },
+	{ "systemctl --user start swww.service" },
 	{ "swww", "img", wallpaper },
 	{ "wl-paste", "--watch", "cliphist", "store" },
-	-- { status_bar }, # don't run status bar on startup
 }
 
 -- Run startup commands
@@ -239,7 +242,7 @@ local river_options = {
 	["hide-cursor"] = { "when-typing", "enabled" },
 	["set-cursor-warp"] = "on-output-change",
 	["set-repeat"] = { 50, 300 },
-	["xcursor-theme"] = { "Adwaita", 24 },
+	["xcursor-theme"] = { "broodwar", 24 },
 	["default-layout"] = "rivertile",
 }
 
@@ -252,8 +255,8 @@ end
 
 local gsettings = {
 	["org.gnome.desktop.interface"] = {
-		["gtk-theme"] = "Adwaita-dark",
-		["icon-theme"] = "Adwaita",
+		["gtk-theme"] = "Orchis-dark",
+		["icon-theme"] = "tela-circle-dark",
 		["cursor-theme"] = river_options["xcursor-theme"][1],
 		["cursor-size"] = river_options["xcursor-theme"][2],
 		["color-scheme"] = "prefer-dark",
@@ -296,6 +299,14 @@ local mappings = {
 				mod = "Super",
 				key = "M",
 				command = { "spawn", "~/.config/river/scripts/mihomo_status.sh" },
+			},
+			{
+				mod = { "Super", "Shift" },
+				key = "D",
+				command = {
+					"spawn",
+					[['wlopm --toggle "*"']],
+				},
 			},
 			-- Terminal
 			{
@@ -948,6 +959,7 @@ tag_mappings()
 scratchpad_tag_mappings()
 run_oneshots(oneshot_commands)
 
+----------------------------------------------------------
 -- 显示器电源管理功能
 local function setup_display_power_management()
 	-- 先终止可能存在的旧进程
@@ -960,7 +972,7 @@ end
 
 -- 调用函数
 setup_display_power_management()
-
+----------------------------------------------------------
 
 -- Launch the layout generator as the final initial process.
 ffi.cdef([[
