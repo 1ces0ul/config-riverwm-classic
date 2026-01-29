@@ -1,6 +1,6 @@
 {
   "layer": "top",
-  "modules-left": ["group/sysinfo","tray"],
+  "modules-left": ["custom/mihomo","group/sysinfo","tray"],
   "modules-center": ["river/tags"],
   "modules-right": ["idle_inhibitor","wireplumber","network","battery","backlight","clock"],
 
@@ -192,5 +192,14 @@
       "balanced": "",
       "power-saver": ""
     }
+  },
+  "custom/mihomo": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/river/scripts/mihomo_status.sh status",
+    "on-click": "~/.config/river/scripts/mihomo_status.sh toggle_mode",      // 左键切模式
+    "on-click-right": "~/.config/river/scripts/mihomo_status.sh toggle_display", // 右键切显示内容
+    "interval": 10,
+    "signal": 8
   },
 }
