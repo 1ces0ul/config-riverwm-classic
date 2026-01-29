@@ -298,7 +298,7 @@ local mappings = {
 			{
 				mod = "Super",
 				key = "M",
-				command = { "spawn", "~/.config/river/scripts/mihomo_status.sh" },
+				command = { "spawn", [['/home/icesoul/.config/river/scripts/mihomo_status.sh toggle_mode']] },
 			},
 			{
 				mod = { "Super", "Shift" },
