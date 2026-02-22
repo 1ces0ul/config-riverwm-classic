@@ -1,5 +1,5 @@
 ![alt](desktop.png)
-# Riverwm on Archlinux setup walkthrough (keep updating)
+# Riverwm on Archlinux setup walkthrough
 ## Archlinux
 1. Install river & dependencies, decorations & gadgets
 
