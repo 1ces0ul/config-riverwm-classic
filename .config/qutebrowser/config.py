@@ -171,6 +171,9 @@ c.qt.force_software_rendering = 'none'
 
 # ==================== 奇技淫巧 ====================
 
+# 隐藏搜索引擎下拉推荐的快捷键（;h = hide）
+config.bind(';H', 'fake-key <Escape>')
+
 # 显示/隐藏标签页列表的快捷键
 config.bind(';T', 'config-cycle tabs.show always never')
 
