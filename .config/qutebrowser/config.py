@@ -175,7 +175,7 @@ c.qt.force_software_rendering = 'none'
 config.bind(';H', 'fake-key <Escape>')
 
 # 显示/隐藏标签页列表的快捷键
-config.bind(';T', 'config-cycle tabs.show always never')
+config.bind(';T', 'config-cycle tabs.show never always')
 
 # 显示/隐藏状态栏的快捷键
 config.bind(';B', 'config-cycle statusbar.show always never')
