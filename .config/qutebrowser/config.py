@@ -1,0 +1,289 @@
+#!/usr/bin/env python3
+# qutebrowser 配置文件（修正版）
+# 位置: ~/.config/qutebrowser/config.py
+# 全面覆盖日常使用场景 + 奇技淫巧
+
+# ==================== 基本设置 ====================
+import os
+import shlex
+
+# 加载自动配置（必须）
+config.load_autoconfig()
+if os.environ.get('XDG_SESSION_TYPE') == 'wayland':
+    term = 'ghostty'
+else:
+    term = 'kitty -T Floating_Term'
+term_cmd = shlex.split(term)
+c.editor.command = term_cmd + ['-e', 'nvim', '{file}', '-c', 'normal {line}G{column0}l']
+fileChooser = term_cmd + ['-e', 'yazi','--chooser-file={}']
+c.fileselect.handler = "external"
+c.fileselect.folder.command = fileChooser
+c.fileselect.multiple_files.command = fileChooser
+c.fileselect.single_file.command = fileChooser
+
+c.confirm_quit = ['downloads']  # 有下载任务时确认退出
+c.downloads.location.directory = os.path.expanduser('~/Downloads')
+
+# ==================== 外观与主题 ====================
+
+# 暗色主题（保护眼睛）
+c.colors.webpage.darkmode.enabled = True
+c.colors.webpage.darkmode.policy.page = 'smart'  # 智能选择暗色模式
+c.colors.webpage.preferred_color_scheme = 'dark'
+
+# 字体设置
+#c.fonts.default_family = ['JetBrains Mono', 'Noto Sans CJK SC', 'DejaVu Sans']
+#c.fonts.default_size = '11pt'
+#c.fonts.web.family.standard = 'Noto Sans CJK SC'
+#c.fonts.web.size.default = 16
+
+# 界面美化
+# The status bar is shown when in modes other than the default "normal" mode (e.g., insert, command, or caret modes).
+c.statusbar.show = 'in-mode'
+c.statusbar.position = 'bottom'
+c.tabs.show = 'multiple'
+c.tabs.position = 'left'
+c.tabs.indicator.width = 3
+c.tabs.title.format = '{index}: {audio} {current_title}'
+c.tabs.title.format_pinned = '[P]{audio}{current_title}'  # 固定标签页
+# 滚动条设置（简约风格）
+c.scrolling.bar = 'when-searching'
+c.scrolling.smooth = True
+
+# ==================== 搜索与导航 ====================
+
+# 起始页（可自定义）
+c.url.start_pages = ['http://127.0.0.1:9090/ui/#/proxies']
+c.url.default_page = 'https://start.duckduckgo.com'
+
+
+# 快速书签（按 b + 字母访问）
+c.aliases.update({
+    'w': 'open https://www.wikipedia.org',
+    'c': 'open http://127.0.0.1:9090/ui/#/proxies',
+    'h': 'https://portal.cmy.network/login?redirect=%2Fsubcenter%2Findex',
+    'y': 'open https://www.youtube.com',
+    'em': 'https://evomap.ai/',
+    'ai': 'https://www.aigocode.com/dashboard/keys',
+    'ds': 'https://platform.deepseek.com/usage',
+    'oc': 'https://learnopencode.com/5-advanced/20-compaction',
+    'vva': 'https://vvacard.com/index/index.html',
+    'gh': 'open https://github.com',
+    'cfg': 'config-edit',  # 编辑本配置文件
+    'reload': 'config-source',  # 重新加载配置
+})
+
+# 搜索引擎（快速搜索） - 确保每个都包含 {} 占位符
+c.url.searchengines = {
+    'DEFAULT': 'https://www.google.com/search?q={}',
+    'g': 'https://www.google.com/search?q={}',
+    'ddg': 'https://duckduckgo.com/?q={}',
+    'w': 'https://en.wikipedia.org/wiki/{}',
+    'yt': 'https://www.youtube.com/results?search_query={}',
+    'gh': 'https://github.com/search?q={}',
+    'aw': 'https://wiki.archlinux.org/index.php?search={}',
+    'so': 'https://stackoverflow.com/search?q={}',
+    'reddit': 'https://www.reddit.com/search?q={}',
+    'b': 'https://search.brave.com/search?q={}',
+    'tb': 'https://thepiratebay.org/search.php?q={}',
+    'gpt': 'https://chatgpt.com/?q={}',
+    'ai': 'https://claude.ai/chat?q={}',
+}
+
+# ==================== 隐私与安全 ====================
+
+c.content.canvas_reading = False  # 禁止网站读取 canvas 数据（防指纹追踪）
+c.content.geolocation = False     # 禁用地理位置
+c.content.webrtc_ip_handling_policy = "default-public-interface-only"  # WebRTC IP 泄露保护
+
+# 内容拦截（广告拦截）
+c.content.blocking.enabled = True
+c.content.blocking.method = 'both'# 使用 hosts 和 AdBlock 列表
+
+c.content.blocking.adblock.lists = [
+  "https://easylist.to/easylist/easylist.txt",
+  "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt",
+  "https://easylist.to/easylist/easyprivacy.txt",
+  "https://secure.fanboy.co.nz/fanboy-annoyance.txt",]
+
+# 跟踪保护
+c.content.cookies.accept = 'no-3rdparty'
+c.content.headers.user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+
+# Cookie 策略切换
+config.bind(';caa', 'set content.cookies.accept all')
+config.bind(';can', 'set content.cookies.accept no-3rdparty')
+config.bind(';cav', 'set content.cookies.accept never')
+
+# UA 切换
+config.bind(';ua1', 'set content.headers.user_agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"')
+config.bind(';ua2', 'set content.headers.user_agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.15.0 Chrome/87.0.4280.144 Safari/537.36"')
+
+# JavaScript 控制（按需开启）
+c.content.javascript.enabled = True
+c.content.javascript.can_open_tabs_automatically = False
+
+# 限制最大化在窗口模式下的行为，允许全屏但不自动最大化
+c.content.fullscreen.window = True
+# 自动播放控制
+c.content.autoplay = False
+
+# ==================== 标签页与窗口管理 ====================
+
+# 标签页行为
+c.tabs.last_close = 'close'
+c.tabs.select_on_remove = 'last-used'
+c.tabs.show_switching_delay = 0
+c.tabs.tabs_are_windows = False
+
+# 新建标签页位置
+c.tabs.new_position.unrelated = 'next'
+
+# 窗口管理
+c.window.hide_decoration = False
+
+# ==================== 下载与媒体 ====================
+
+# 下载设置
+c.downloads.location.prompt = False       # 不询问下载位置
+c.downloads.location.suggestion = 'both'  # 显示路径和文件名建议
+c.downloads.location.remember = False     # 不记住下载位置
+c.downloads.remove_finished = 3300        # 3.3秒后删除完成的下载
+c.downloads.position = "bottom"           # 下载栏在底部显示
+# 媒体控制
+c.content.media.audio_capture = False
+c.content.media.video_capture = False
+c.content.media.audio_video_capture = False
+c.content.mute = False
+
+# PDF 查看器
+c.content.pdfjs = True
+
+# ==================== 性能优化 ====================
+
+# 缓存与存储
+c.content.cache.size = 52428800  # 50MB
+c.content.cache.appcache = True
+
+# 硬件加速 - 使用字符串 'false' 而不是布尔值 False
+c.qt.highdpi = True
+c.qt.force_software_rendering = 'none'
+
+# ==================== 奇技淫巧 ====================
+
+# 显示/隐藏标签页列表的快捷键
+config.bind(';T', 'config-cycle tabs.show always never')
+
+# 显示/隐藏状态栏的快捷键
+config.bind(';B', 'config-cycle statusbar.show always never')
+
+# 1. 快速阅读模式（类似 Safari Reader）
+config.bind('R', 'hint links userscript read')
+
+# 2. 视频控制（空格播放/暂停，f全屏）
+config.bind('<Space>', 'hint links run spawn mpv {hint-url}')
+config.bind(';v', 'hint links spawn mpv {hint-url}')
+config.bind(';a', 'hint links spawn ghostty -e yt-dlp {hint-url}')
+
+# 3. 快速搜索选中文本（多种引擎）
+#config.bind('sg', 'cmd-set-text /')
+#config.bind('sG', 'cmd-set-text ?')
+#config.bind('ss', 'cmd-set-text -s :search')
+#config.bind('sd', 'cmd-set-text :open -t duckduckgo.com/?q={}')
+#config.bind('sw', 'cmd-set-text :open -t en.wikipedia.org/wiki/{}')
+
+# 4. 开发者工具快捷键
+config.bind('di', 'devtools')
+config.bind('dI', 'devtools --toggle')
+config.bind('de', 'devtools element')
+config.bind('dc', 'console')
+
+# 5. 快速切换代理（需要先配置代理）
+config.bind(';p1', 'set content.proxy http://localhost:7890')
+config.bind(';p0', 'set content.proxy system')
+
+# 6. 暗色模式切换
+config.bind(';d', 'config-cycle colors.webpage.darkmode.enabled true false')
+
+# 7. 快速保存页面（截图/PDF/HTML）
+config.bind(';ps', 'print')
+config.bind(';pp', 'print --pdf')
+config.bind(';ph', 'download --dest ~/Downloads/html/ --path %s.html')
+
+# 8. 视频画中画模式
+config.bind(';vp', 'hint links spawn --detach mpv --no-terminal --force-window=immediate {hint-url}')
+
+# 9. RSS 订阅检测
+config.bind(';rss', 'hint feeds')
+
+# 10. 快速计算器（选中数学表达式后使用）
+config.bind(';calc', 'spawn --userscript qute-calc')
+
+# ==================== 用户脚本 ====================
+
+# 创建用户脚本目录（如果不存在）
+user_script_dir = os.path.expanduser('~/.config/qutebrowser/userscripts')
+os.makedirs(user_script_dir, exist_ok=True)
+
+# 示例：网页翻译脚本（需要安装 translate-shell）
+translate_script = os.path.join(user_script_dir, 'translate')
+if not os.path.exists(translate_script):
+    with open(translate_script, 'w') as f:
+        f.write('''#!/bin/bash
+# 翻译选中文本
+TEXT="$QUTE_SELECTED_TEXT"
+LANG="zh"
+trans -b "$TEXT" -t $LANG
+''')
+    os.chmod(translate_script, 0o755)
+
+# ==================== 高级配置 ====================
+
+# 自动补全设置
+c.completion.shrink = True
+c.completion.height = '30%'
+c.completion.scrollbar.width = 12
+# 补全类别设置
+c.completion.open_categories = ['filesystem']  # 打开补全时显示文件系统类别
+# 提示模式设置
+c.hints.chars = 'asdfghjkl'
+c.hints.mode = 'letter'
+c.hints.auto_follow = 'always'
+c.hints.auto_follow_timeout = 0
+
+# 密码管理（需要 compatible 密码管理器）
+c.auto_save.session = True
+c.session.lazy_restore = True
+
+# 鼠标行为 - 使用布尔值而不是元组
+c.input.mouse.back_forward_buttons = True
+
+# ==================== 环境特定配置 ====================
+
+# Wayland 支持（如果你使用 Wayland）
+if os.environ.get('WAYLAND_DISPLAY'):
+    c.qt.args = ['--enable-features=WebRTCPipeWireCapturer']
+    c.qt.force_platform = 'wayland'
+
+# 高DPI屏幕支持
+if os.environ.get('GDK_SCALE', '1') != '1':
+    c.qt.highdpi = True
+    c.fonts.default_size = str(int(c.fonts.default_size[:-2]) * int(os.environ.get('GDK_SCALE', 1))) + 'pt'
+
+# ==================== 调试与日志 ====================
+
+# 日志级别（调试时使用）
+# c.logging.level.console = 'debug'
+# c.logging.level.js = 'info'
+
+# 性能监控
+c.content.site_specific_quirks.enabled = True
+
+print('qutebrowser 配置加载完成！')
+print('提示: 按 :cfg 编辑配置，按 :reload 重新加载')
+print('常用命令:')
+print('  :open url           - 打开网址')
+print('  :tab-open url       - 新标签页打开')
+print('  :set url.searchengines - 配置搜索引擎')
+print('  :bookmark-add       - 添加书签')
+print('  :quickmark-add      - 添加快捷书签')
