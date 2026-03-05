@@ -162,8 +162,7 @@ c.content.pdfjs = True
 # ==================== 性能优化 ====================
 
 # 缓存与存储
-c.content.cache.size = 52428800  # 50MB
-c.content.cache.appcache = True
+#c.content.cache.size = 52428800  # 50MB
 
 # 硬件加速 - 使用字符串 'false' 而不是布尔值 False
 c.qt.highdpi = True
