@@ -64,6 +64,7 @@ c.aliases.update({
     'h': 'open https://portal.cmy.network/login?redirect=%2Fsubcenter%2Findex',
     'y': 'open https://www.youtube.com',
     'bd': 'open https://www.boot.dev/',
+    'cf': 'open https://algo.codefather.cn/',
     'em': 'open https://evomap.ai/',
     'ai': 'open https://www.aigocode.com/dashboard/keys',
     'ds': 'open https://platform.deepseek.com/usage',
