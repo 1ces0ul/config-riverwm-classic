@@ -90,6 +90,15 @@ docker
 docker-compose
 opencode-bin
 postman-bin(n8n)
+tela-circle-icon-theme-all
+orchis-theme
+wlroots-hidpi-git
+zig
+wayland-info
+qutebrowser
+python-adblock(qutebrowseradblock)
+yt-dlp
+
 ```
 
 `power-profiles-daemon` `sudo systemctl enable power-profiles-daemon.service`
