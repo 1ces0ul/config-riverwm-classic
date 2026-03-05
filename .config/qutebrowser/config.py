@@ -203,7 +203,7 @@ config.bind(';p1', 'set content.proxy http://localhost:7890')
 config.bind(';p0', 'set content.proxy system')
 
 # 6. 暗色模式切换
-config.bind(';cc', 'config-cycle colors.webpage.darkmode.enabled true false')
+config.bind(';Cc', 'config-cycle colors.webpage.darkmode.enabled true false')
 
 # 7. 快速保存页面（截图/PDF/HTML）
 config.bind(';ps', 'print')
