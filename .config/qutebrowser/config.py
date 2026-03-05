@@ -272,7 +272,7 @@ c.completion.scrollbar.width = 12
 c.completion.open_categories = ['filesystem']  # 打开补全时显示文件系统类别
 
 # 提示模式设置
-c.hints.delay = 0
+c.keyhint.delay = 0
 c.hints.chars = 'asdfghjkl;'
 c.hints.mode = 'letter'
 c.hints.auto_follow = 'always'
