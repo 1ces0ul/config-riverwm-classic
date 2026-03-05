@@ -108,7 +108,7 @@ c.content.blocking.adblock.lists = [
 
 # 跟踪保护
 c.content.cookies.accept = 'no-3rdparty'
-c.content.headers.user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+c.content.headers.user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
 
 # Cookie 策略切换
 config.bind(';caa', 'set content.cookies.accept all')
@@ -116,7 +116,7 @@ config.bind(';can', 'set content.cookies.accept no-3rdparty')
 config.bind(';cav', 'set content.cookies.accept never')
 
 # UA 切换
-config.bind(';ua1', 'set content.headers.user_agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"')
+config.bind(';ua1', 'set content.headers.user_agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"')
 config.bind(';ua2', 'set content.headers.user_agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) QtWebEngine/5.15.0 Chrome/87.0.4280.144 Safari/537.36"')
 
 # JavaScript 控制（按需开启）
