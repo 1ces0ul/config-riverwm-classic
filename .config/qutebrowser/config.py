@@ -63,6 +63,7 @@ c.aliases.update({
     'c': 'open http://127.0.0.1:9090/ui/#/proxies',
     'h': 'open https://portal.cmy.network/login?redirect=%2Fsubcenter%2Findex',
     'y': 'open https://www.youtube.com',
+    'bd': 'open https://www.boot.dev/',
     'em': 'open https://evomap.ai/',
     'ai': 'open https://www.aigocode.com/dashboard/keys',
     'ds': 'open https://platform.deepseek.com/usage',
