@@ -168,7 +168,8 @@ c.content.pdfjs = True
 #c.qt.highdpi = True
 #c.qt.force_software_rendering = 'none'
 
-
+# unbind
+config.unbind('<Ctrl-v>')
 # ==================== 直通模式 ====================
 # 直通模式：所有按键直接传给网页，不被 qutebrowser 拦截
 # 比 insert 模式更彻底，适合网页版 IDE、终端等需要完整键盘的场景
