@@ -162,14 +162,16 @@ c.content.pdfjs = True
 # ==================== 性能优化 ====================
 
 # 硬件加速 - 使用字符串 'false' 而不是布尔值 False
-c.qt.highdpi = True
-c.qt.force_software_rendering = 'none'
+#c.qt.highdpi = True
+#c.qt.force_software_rendering = 'none'
 
-# ==================== 奇技淫巧 ====================
 
-# passthough mode
+# ==================== 直通模式 ====================
+# 直通模式：所有按键直接传给网页，不被 qutebrowser 拦截
+# 比 insert 模式更彻底，适合网页版 IDE、终端等需要完整键盘的场景
 config.bind('<Ctrl-Shift-v>', 'mode-enter passthrough')
 
+# ==================== 奇技淫巧 ====================
 # 重新加载配置文件（改完 config.py 后用）
 config.bind('cs', 'config-source')
 
@@ -185,25 +187,22 @@ config.bind(',', 'config-cycle tabs.show never always')
 # 显示/隐藏状态栏的快捷键
 config.bind('.', 'config-cycle statusbar.show always never')
 
-# 1. 快速阅读模式（类似 Safari Reader）
-config.bind('R', 'hint links userscript read')
-
-# 2. 视频控制（空格播放/暂停，f全屏）
+# 视频控制（空格播放/暂停，f全屏）
 #config.bind('<Space>', 'hint links run spawn mpv {hint-url}')
 config.bind(';Dv', 'hint links spawn ghostty -e yt-dlp {hint-url}')
 
-# 3. 快速搜索选中文本（多种引擎）
+# 快速搜索选中文本（多种引擎）
 #config.bind('sg', 'cmd-set-text /')
 #config.bind('sG', 'cmd-set-text ?')
 #config.bind('ss', 'cmd-set-text -s :search')
 #config.bind('sd', 'cmd-set-text :open -t duckduckgo.com/?q={}')
 #config.bind('sw', 'cmd-set-text :open -t en.wikipedia.org/wiki/{}')
 
-# 5. 快速切换代理（需要先配置代理）
+# 快速切换代理（需要先配置代理）
 config.bind(';p1', 'set content.proxy http://localhost:7890')
 config.bind(';p0', 'set content.proxy system')
 
-# 6. 暗色模式切换
+# 暗色模式切换
 config.bind(';Cc', 'config-cycle colors.webpage.darkmode.enabled true false')
 
 # --- 缩放控制（z 前缀 = Zoom）---
@@ -212,22 +211,24 @@ config.bind('zo', 'zoom-out')                              # 缩小
 config.bind('zz', 'zoom {}'.format(c.zoom.default))        # 重置为默认缩放（巧妙：动态读取配置值）
 config.bind('zf', 'config-cycle fonts.web.size.minimum 0 18')  # 切换最小字体：0（无限制）↔️ 18px（强制大字体，应对小字网页）
 
-# manually toggle canvas reading if some website's breaking
+# --- Canvas 开关 ---
+# Cloudflare 等网站需要 canvas，但平时关着防指纹追踪
+# 这个写法很聪明：切换 + 显示当前值（末尾的 ? 会在状态栏显示切换后的状态）
 config.bind(
         'zc',
         'config-cycle content.canvas_reading true false ;; \
          set content.canvas_reading?'
 )
 
-# 7. 快速保存页面（截图/PDF/HTML）
+# 快速保存页面（截图/PDF/HTML）
 config.bind(';ps', 'print')
 config.bind(';pp', 'print --pdf')
 config.bind(';ph', 'download --dest ~/Downloads/html/ --path %s.html')
 
-# 9. RSS 订阅检测
+# RSS 订阅检测
 config.bind(';rss', 'hint feeds')
 
-# 10. 快速计算器（选中数学表达式后使用）
+# 快速计算器（选中数学表达式后使用）
 config.bind(';calc', 'spawn --userscript qute-calc')
 
 # 命令行补全中用 Ctrl-P/N 浏览历史（和 shell/vim 习惯一致）
