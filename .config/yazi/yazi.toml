@@ -1,0 +1,20 @@
+[opener]
+pdf = [
+    # 改为 orphan = true，看完不用关 PDF 也能继续在 Yazi 里找素材
+    { run = 'zathura "$@"', desc = "zathura", orphan = true, for = "unix" }
+]
+
+video = [
+    # 官方文档占位符标准：%s 会被 Yazi 自动安全地替换为所有选中文件的绝对路径
+    { run = 'mpv %s', desc = "mpv", orphan = true, for = "unix" }
+]
+
+[open]
+prepend_rules = [
+    # HTML 默认用系统浏览器打开，同时保留编辑器选项
+    { url = "*.{html,htm,xhtml}", use = [ "open", "edit" ] },
+    { mime = "text/html", use = [ "open", "edit" ] },
+    { mime = "application/xhtml+xml", use = [ "open", "edit" ] },
+    { mime = "application/pdf", use = [ "pdf", "reveal" ] },
+    { mime = "video/*", use = [ "video", "reveal" ] }
+]
