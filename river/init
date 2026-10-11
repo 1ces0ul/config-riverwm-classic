@@ -884,13 +884,13 @@ local mappings = {
 			{
 				mod = "None",
 				key = "XF86MonBrightnessUp",
-				command = { "spawn", [['brightnessctl set 1%%+']] },
+				command = { "spawn", shell_quote(SCRIPTS .. "/brightness-notify.sh up") },
 				opt = "repeat",
 			},
 			{
 				mod = "None",
 				key = "XF86MonBrightnessDown",
-				command = { "spawn", [['brightnessctl set 1%%-']] },
+				command = { "spawn", shell_quote(SCRIPTS .. "/brightness-notify.sh down") },
 				opt = "repeat",
 			},
 		},
