@@ -23,7 +23,7 @@ wlopm
 slurp
 swayidle
 waylock
-awww
+swww
 mako
 fuzzel
 wev
@@ -96,10 +96,37 @@ wlroots-hidpi-git
 zig
 wayland-info
 qutebrowser
+keepassxc(qutebrowser password manager)
+python-pynacl(qutebrowser password manager)
+pdfjs(qutebrowser pdf preview)
 python-adblock(qutebrowseradblock)
 yt-dlp
 feishu-bin
 rsync
+obs-studio
+tailscale
+tigervnc-viewer
+obsidian
+janet-lang-git
+dunst
+colord(framework laptop color management)
+xiccd(framework laptop color management)
+wf-recorder(wayland screen recorder)
+xdg-desktop-portal-wlr(wayland screen recorder)
+donutbrowser-bin
+adspower
+kimi-cli-bin
+wemeet-bin
+github-cli
+git-lfs
+workbuddy-bin
+wechat-devtools-bin
+deepseek-harness-bin
+voxtype（语音输入）
+wtype（模拟键盘按键）
+sunloginclient
+rustdesk
+exfatprogs
 ```
 
 `power-profiles-daemon` `sudo systemctl enable power-profiles-daemon.service`
