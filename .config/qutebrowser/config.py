@@ -6,6 +6,7 @@
 # ==================== 基本设置 ====================
 import os
 import shlex
+import yaml
 
 # 加载自动配置（需要时取消注释）
 config.load_autoconfig(False)
@@ -33,11 +34,14 @@ c.colors.webpage.preferred_color_scheme = 'dark'
 
 # 字体设置
 c.fonts.default_family = ['JetBrains Mono', 'Noto Sans CJK SC', 'DejaVu Sans']
-c.fonts.default_size = '11pt'
+c.fonts.default_size = '12pt'
+c.fonts.tabs.selected = 'bold 18pt default_family'
+c.fonts.tabs.unselected = '18pt default_family'
 c.fonts.web.family.standard = 'Noto Sans CJK SC'
 c.fonts.web.family.fixed = 'JetBrains Mono'
-c.fonts.web.size.default = 16
-c.fonts.web.size.default_fixed = 15
+c.fonts.web.size.default = 18
+c.fonts.web.size.default_fixed = 16
+c.zoom.default = '100%'
 
 # 界面美化
 # The status bar is shown when in modes other than the default "normal" mode (e.g., insert, command, or caret modes).
@@ -45,6 +49,7 @@ c.statusbar.show = 'in-mode'
 c.statusbar.position = 'bottom'
 c.tabs.show = 'multiple'
 c.tabs.position = 'left'
+c.tabs.width = '25%'
 c.tabs.indicator.width = 3
 c.tabs.title.format = '{index}: {audio} {current_title}'
 c.tabs.title.format_pinned = '[P]{audio}{current_title}'  # 固定标签页
@@ -55,14 +60,14 @@ c.scrolling.smooth = True
 # ==================== 搜索与导航 ====================
 
 # 起始页（可自定义）
-c.url.start_pages = ['http://127.0.0.1:9090/ui/#/proxies']
+c.url.start_pages = ['http://127.0.0.1:9090/ui']
 c.url.default_page = 'https://start.duckduckgo.com'
 
 
 # 快速书签（按 b + 字母访问）
 c.aliases.update({
     'wiki': 'open https://www.wikipedia.org',
-    'c': 'open http://127.0.0.1:9090/ui/#/proxies',
+    'c': 'open http://127.0.0.1:9090/ui',
     'h': 'open https://portal.cmy.network/login?redirect=%2Fsubcenter%2Findex',
     'y': 'open https://www.youtube.com',
     'bd': 'open https://www.boot.dev/',
@@ -105,7 +110,17 @@ c.url.yank_ignored_parameters = [
 
 c.content.canvas_reading = False  # 禁止网站读取 canvas 数据（防指纹追踪）
 c.content.geolocation = False     # 禁用地理位置
-c.content.webrtc_ip_handling_policy = "default-public-interface-only"  # WebRTC IP 泄露保护
+# 仅恢复上次保存的 WebRTC 策略，其他自动配置仍不加载。
+_webrtc_policy = 'disable-non-proxied-udp'
+_webrtc_autoconfig = config.configdir / 'autoconfig.yml'
+if _webrtc_autoconfig.exists():
+    with _webrtc_autoconfig.open(encoding='utf-8') as _webrtc_file:
+        _webrtc_saved = yaml.safe_load(_webrtc_file) or {}
+    _webrtc_value = _webrtc_saved.get('settings', {}).get(
+        'content.webrtc_ip_handling_policy', {}).get('global')
+    if _webrtc_value in ('disable-non-proxied-udp', 'all-interfaces'):
+        _webrtc_policy = _webrtc_value
+c.content.webrtc_ip_handling_policy = _webrtc_policy
 c.content.cookies.accept = 'no-3rdparty'
 
 # 按站点放宽隐私限制，减少登录、验证码和 Web App 兼容性问题
@@ -225,6 +240,11 @@ config.bind(';vm', 'spawn --detach mpv --ytdl-format=bestvideo+bestaudio/best {u
 config.bind(';p1', 'set content.proxy http://localhost:7890')
 config.bind(';p0', 'set content.proxy system')
 
+# 显示并保存切换后的策略；按回车执行预填的重启命令后才生效。
+config.bind('zw', 'config-cycle -p content.webrtc_ip_handling_policy '
+            'disable-non-proxied-udp all-interfaces ;; save yaml-config ;; '
+            'cmd-set-text :restart')
+
 # 暗色模式切换
 config.bind(';Cc', 'config-cycle colors.webpage.darkmode.enabled true false')
 
@@ -250,9 +270,6 @@ config.bind(';ph', 'download --dest ~/Downloads/html/ --path %s.html')
 
 # RSS 订阅检测
 config.bind(';rss', 'hint feeds')
-
-# 快速计算器（选中数学表达式后使用）
-config.bind(';calc', 'spawn --userscript qute-calc')
 
 # 密码管理：KeePassXC 集成
 # 需要安装 keepassxc + python-pynacl；多账号选择使用本地 fuzzel 版本脚本。
